@@ -19,6 +19,12 @@ public class Driver {
 		//starts server on 8000 port
 		Javalin app = Javalin.create().start(8000);
 		
+		//receive username and password maybe boss to login
+		app.post("/register", ctx -> {
+			// check sql for matching username if not make new entry in db
+			ctx.status(HttpStatus.CREATED_201);
+		})
+		
 		//receives login request
 		app.post("/login", ctx -> {
 			Person receivedPerson = ctx.bodyAsClass(Person.class);
@@ -35,10 +41,24 @@ public class Driver {
 		});
 		
 		
-		//request employee past tickets from SQl databace
+		//request manager and employee past tickets from SQl databace
 		app.get("/employee", ctx -> {	
-		
+			if ();
+		// recall sql script where username matched
 		});
+		
+		//Submit new ticket
+		app.post("/new_ticket", ctx -> {
+			
+		});
+	
+	
+	
+	
+	
+	
+	
+	
 	}
 
 }
