@@ -21,38 +21,36 @@ public class Driver {
 		
 		//receive username and password maybe boss to login
 		app.post("/register", ctx -> {
-			// check sql for matching username if not make new entry in db
+			
 			ctx.status(HttpStatus.CREATED_201);
-		})
+		});
 		
 		//receives login request
-		app.post("/login", ctx -> {
-			Person receivedPerson = ctx.bodyAsClass(Person.class);
-			if (receivedPerson.getUsername() == ){ //SQL check here)
+	//	app.post("/login", ctx -> {
+		//	Person receivedPerson = ctx.bodyAsClass(Person.class);
+		//	if (receivedPerson.getUsername() == ){ //SQL check here)
 				// get userid and then use it to get corrisponding password
-				if (receivedPerson.getPassword() == ) {//check SQL password
+	//			if (receivedPerson.getPassword() == ) {//check SQL password
 					//send approved login message
-				}
-				else //send password does not match message
+	//			};
+	//			else //send password does not match message
 					
-		}
-			else // send username does not match
+	//	}
+		//	else // send username does not match
 			
-		});
+	//	});
 		
 		
 		//request manager and employee past tickets from SQl databace
-		app.get("/employee", ctx -> {	
-			if ();
+	//	app.get("/employee", ctx -> {	
+		
 		// recall sql script where username matched
-		});
+	//	});
 		
 		//Submit new ticket
-		app.post("/new_ticket", ctx -> {
+	//	app.post("/new_ticket", ctx -> {
 			
-		});
-	
-	
+	//	});
 	
 	
 	
@@ -60,5 +58,7 @@ public class Driver {
 	
 	
 	}
+	
+	
 
 }
