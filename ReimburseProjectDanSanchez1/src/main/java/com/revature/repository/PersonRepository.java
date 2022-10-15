@@ -11,27 +11,26 @@ public class PersonRepository {
 
 	
 	
-	//save a new username
-	public void save(Person person) {
+	
+	
+	
+	
+	
+	//save a new user
+	public static void save(Person person) {
 
-		PreparedStatement stmt = null;
-		final String SQL = "INSERT INTO person values(default, ?, ?, ?)";
+		final String SQLSave = "INSERT INTO person VAlUES (default, ?, ?, ?)";
 
-		try (Connection connect = ConnectionFactory.getConnection()) {
-			stmt = connect.prepareStatement(SQL);
-			stmt.setString(1, person.getPerson_username());
-			stmt.setString(2, person.getPerson_password());
-			stmt.setBoolean(3, person.isPerson_boss());
-			stmt.execute();
+		try (Connection connect = ConnectionFactory.getConnection(); 
+				PreparedStatement pstmt = connect.prepareStatement(SQLSave);) {
+			
+			pstmt.setString(1, person.getPerson_username());
+			pstmt.setString(2, person.getPerson_password());
+			pstmt.setBoolean(3, person.isPerson_boss());
+			pstmt.execute();
 
 		} catch (SQLException e) {
 			e.printStackTrace();
-		} finally {
-			try {
-				stmt.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
 		}
 
 	}

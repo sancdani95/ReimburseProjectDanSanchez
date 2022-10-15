@@ -2,7 +2,9 @@ package com.revature;
 
 import org.eclipse.jetty.http.HttpStatus;
 
-import com.revature.model.Person;
+
+import com.revature.model.*;
+import com.revature.repository.*;
 
 import io.javalin.Javalin;
 
@@ -19,9 +21,19 @@ public class Driver {
 		//starts server on 8000 port
 		Javalin app = Javalin.create().start(8000);
 		
+		app.get("/login", ctx -> {
+			ctx.res().getWriter().write("Please enter your username and password.");
+		});
+		
 		//receive username and password maybe boss to login
 		app.post("/register", ctx -> {
+			Person receivedPerson = new Person();	
 			
+			receivedPerson = ctx.bodyAsClass(Person.class);
+			System.out.println(receivedPerson);
+			
+			
+			PersonRepository.save(receivedPerson);
 			ctx.status(HttpStatus.CREATED_201);
 		});
 		
