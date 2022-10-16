@@ -9,6 +9,8 @@ CREATE TABLE IF NOT EXISTS person(
 
 SELECT * FROM person
 
+SELECT * FROM ticket
+
 INSERT INTO person VALUES (DEFAULT, 'bro', 'pass', DEFAULT)
 
 INSERT INTO person VALUES (DEFAULT, 'sis', 'word', DEFAULT),(DEFAULT, 'mom', '1111', TRUE), 
