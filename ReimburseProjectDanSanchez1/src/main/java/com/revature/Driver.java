@@ -29,7 +29,7 @@ public class Driver {
 		
 		//recieves login information
 		app.get("/login", ctx -> {
-			ctx.res().getWriter().write("Please enter your username and password.");
+			ctx.result("Please submit your username and password");
 		});
 		
 	
@@ -91,8 +91,14 @@ public class Driver {
 	
 	
 		//manager Approves or denies tickets - need ticket_id, approve or deny
-		app.post("/ticket_responce", cxt ->{
+		app.post("/ticket_respond", ctx ->{
 			
+			Ticket recievedTicket = ctx.bodyAsClass(Ticket.class);
+			
+			TicketRepository.respond(recievedTicket);
+			
+			ctx.result("Ticket Updated");
+			ctx.status(HttpStatus.ACCEPTED_202);
 		});
 	
 	
