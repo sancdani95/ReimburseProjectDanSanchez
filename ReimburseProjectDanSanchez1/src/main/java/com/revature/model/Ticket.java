@@ -19,7 +19,7 @@ public class Ticket {
 	private int ticket_id;
 	private String ticket_username;
 	private int ticket_amount;
-	private String ticket_discription;
+	private String ticket_description;
 	private String ticket_status;
 	
 	//no-args constructor
@@ -29,13 +29,13 @@ public class Ticket {
 	}
 
 	//constructor using all of the fields
-	public Ticket(int ticket_id, String ticket_username, int ticket_amount, String ticket_discription,
+	public Ticket(int ticket_id, String ticket_username, int ticket_amount, String ticket_description,
 			String ticket_status) {
 		super();
 		this.ticket_id = ticket_id;
 		this.ticket_username = ticket_username;
 		this.ticket_amount = ticket_amount;
-		this.ticket_discription = ticket_discription;
+		this.ticket_description = ticket_description;
 		this.ticket_status = ticket_status;
 	}
 
@@ -65,12 +65,12 @@ public class Ticket {
 		this.ticket_amount = ticket_amount;
 	}
 
-	public String getTicket_discription() {
-		return ticket_discription;
+	public String getTicket_description() {
+		return ticket_description;
 	}
 
-	public void setTicket_discription(String ticket_discription) {
-		this.ticket_discription = ticket_discription;
+	public void setTicket_discription(String ticket_description) {
+		this.ticket_description = ticket_description;
 	}
 
 	public String getTicket_status() {
@@ -85,7 +85,7 @@ public class Ticket {
 	//hashCode and equals methods
 	@Override
 	public int hashCode() {
-		return Objects.hash(ticket_amount, ticket_discription, ticket_id, ticket_status, ticket_username);
+		return Objects.hash(ticket_amount, ticket_description, ticket_id, ticket_status, ticket_username);
 	}
 
 	@Override
@@ -97,7 +97,7 @@ public class Ticket {
 		if (getClass() != obj.getClass())
 			return false;
 		Ticket other = (Ticket) obj;
-		return ticket_amount == other.ticket_amount && Objects.equals(ticket_discription, other.ticket_discription)
+		return ticket_amount == other.ticket_amount && Objects.equals(ticket_description, other.ticket_description)
 				&& ticket_id == other.ticket_id && Objects.equals(ticket_status, other.ticket_status)
 				&& Objects.equals(ticket_username, other.ticket_username);
 	}
@@ -107,7 +107,7 @@ public class Ticket {
 	@Override
 	public String toString() {
 		return "Ticket [ticket_id=" + ticket_id + ", ticket_username=" + ticket_username + ", ticket_amount="
-				+ ticket_amount + ", ticket_discription=" + ticket_discription + ", ticket_status=" + ticket_status
+				+ ticket_amount + ", ticket_discription=" + ticket_description + ", ticket_status=" + ticket_status
 				+ "]";
 	}
 

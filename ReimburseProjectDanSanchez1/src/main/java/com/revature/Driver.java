@@ -21,8 +21,10 @@ public class Driver {
 	
 	public static void main(String[] args) {
 		
+		
 		//starts server on 8000 port
 		Javalin app = Javalin.create().start(8000);
+		
 		
 		
 		//recieves login information
@@ -30,16 +32,21 @@ public class Driver {
 			ctx.res().getWriter().write("Please enter your username and password.");
 		});
 		
+	
 		
 		//receive username and password maybe boss to login
 		app.post("/register", ctx -> {
 			
 			Person receivedPerson = new Person();
-			
 			receivedPerson = ctx.bodyAsClass(Person.class);
+			
 			PersonRepository.save(receivedPerson);
 			
-			System.out.println(receivedPerson);
+			if (receivedPerson.isPerson_boss()) {
+				ctx.result("New Manager Created!");
+			} else {
+				ctx.result("New Employee Created!");
+			}
 			ctx.status(HttpStatus.CREATED_201);
 			
 		});
@@ -50,18 +57,34 @@ public class Driver {
 		app.get("/ticket", ctx -> {	
 		
 			//save sent information
-			Person receivedID = new Person();
-			receivedID = ctx.bodyAsClass(Person.class);
+			Person receivedID = ctx.bodyAsClass(Person.class);
+			
+			//create list to store results
 			List<Ticket> ticketList = new ArrayList<>();
 			
+			//runs the find ticket method
 			ticketList = PersonRepository.findTicket(receivedID);
 	
-			System.out.println(ticketList);
+			if (ticketList.size() == 0) {
+				ctx.result("No tickets submitted");
+			}else {
+				ctx.json(ticketList);
+			}
+			
 		});
+		
 		
 		
 		//Submit new ticket
 		app.post("/new_ticket", ctx -> {
+			
+			Ticket recieveTicket = new Ticket();
+			recieveTicket = ctx.bodyAsClass(Ticket.class);
+			
+			TicketRepository.submit(recieveTicket);
+			
+			ctx.result("New Ticket Submitted!");
+			ctx.status(HttpStatus.CREATED_201);
 			
 		});
 	
