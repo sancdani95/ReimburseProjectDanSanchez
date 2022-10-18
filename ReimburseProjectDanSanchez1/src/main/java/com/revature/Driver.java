@@ -63,7 +63,7 @@ public class Driver {
 			List<Ticket> ticketList = new ArrayList<>();
 			
 			//runs the find ticket method
-			ticketList = PersonRepository.findTicket(receivedID);
+			ticketList = TicketRepository.findTicket(receivedID);
 	
 			if (ticketList.size() == 0) {
 				ctx.result("No tickets submitted");
