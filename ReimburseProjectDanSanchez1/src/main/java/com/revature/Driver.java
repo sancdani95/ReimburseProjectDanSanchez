@@ -28,22 +28,21 @@ public class Driver {
 		//starts server on 8000 port
 		Javalin app = Javalin.create().start(8000);
 		
+		app.post("/test", ctx -> {
+			ctx.json("working");
+		});
 		
 		
 		//recieves login information
-		app.get("/login", ctx -> {
-			
-			//create cookies for session handling
-			Cookie aCookie = new Cookie("authenticated","true");
-			aCookie.setHttpOnly(true);
-			Cookie eCookie = new Cookie("boss","false");
-			eCookie.setHttpOnly(true);
-			Cookie mCookie = new Cookie("boss", "true");
-			mCookie.setHttpOnly(true);
+		app.post("/login", ctx -> {
 			
 			//creates variables for login procedure
 			List<String> users = new ArrayList<>();
 			users = PersonRepository.checkUser();
+			Cookie aCookie = CookieRepository.aCookie();
+			Cookie eCookie = CookieRepository.eCookie();
+			Cookie mCookie = CookieRepository.mCookie();
+			
 			
 			Person receivedUser = ctx.bodyAsClass(Person.class);
 			String name = receivedUser.getPerson_username();
@@ -53,14 +52,17 @@ public class Driver {
 				String pPass = pullUser.getPerson_password();
 				String rPass = receivedUser.getPerson_password();
 				
+				
 				if (rPass.equals(pPass)) {
-					ctx.json("Welcome User");
 					ctx.res().addCookie(aCookie);
+					ctx.json("Welcome User");
 					
 					if(pullUser.isPerson_boss()) {
 						ctx.res().addCookie(mCookie);
+						
 					} else {
 						ctx.res().addCookie(eCookie);
+						
 					}
 					
 				} else {
@@ -143,6 +145,16 @@ public class Driver {
 		});
 	
 	
+		app.get("/logout", ctx -> {
+
+			Cookie[] cookies = ctx.req().getCookies();
+			
+			for (Cookie cookie : cookies) {
+				if (cookie.getName().equals("authenticated")) cookie.setValue("false");
+				
+			}
+			ctx.json("You have been Logged out.");
+		});
 	
 	}
 	
