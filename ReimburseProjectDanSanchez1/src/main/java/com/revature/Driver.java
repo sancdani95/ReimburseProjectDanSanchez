@@ -29,7 +29,26 @@ public class Driver {
 		
 		//recieves login information
 		app.get("/login", ctx -> {
-			ctx.result("Please submit your username and password");
+			
+			List<String> users = new ArrayList<>();
+			users = PersonRepository.checkUser();
+			
+			Person receivedUser = ctx.bodyAsClass(Person.class);
+			Person pullUser = PersonRepository.pullUser(receivedUser);
+			String name = receivedUser.getPerson_username();
+			String rPass = receivedUser.getPerson_password();
+			String pPass = pullUser.getPerson_password();
+			
+			if (users.contains(name)) {
+				if (rPass == pPass) {
+					ctx.json("Welcome User");
+				}
+				
+			} else {
+			ctx.json("User does not Exist.");
+			}
+			
+			
 		});
 		
 	
