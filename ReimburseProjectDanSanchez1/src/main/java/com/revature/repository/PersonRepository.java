@@ -50,10 +50,12 @@ public class PersonRepository {
 				PreparedStatement stmt = connect.prepareStatement(SQLlogin);) {
 			
 			stmt.setString(1, person.getPerson_username());
+		
 			set = stmt.executeQuery();
 			
 			set.next();
 			user = new Person(set.getInt(1),set.getString(2),set.getString(3),set.getBoolean(4));
+			
 			
 	} catch (SQLException e) {
 		e.printStackTrace();

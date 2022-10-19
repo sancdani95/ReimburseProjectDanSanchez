@@ -10,6 +10,9 @@ import com.revature.model.*;
 import com.revature.repository.*;
 
 import io.javalin.Javalin;
+import jakarta.servlet.http.Cookie;
+
+
 
 public class Driver {
 	
@@ -30,24 +33,43 @@ public class Driver {
 		//recieves login information
 		app.get("/login", ctx -> {
 			
+			//create cookies for session handling
+			Cookie aCookie = new Cookie("authenticated","true");
+			aCookie.setHttpOnly(true);
+			Cookie eCookie = new Cookie("boss","false");
+			eCookie.setHttpOnly(true);
+			Cookie mCookie = new Cookie("boss", "true");
+			mCookie.setHttpOnly(true);
+			
+			//creates variables for login procedure
 			List<String> users = new ArrayList<>();
 			users = PersonRepository.checkUser();
 			
 			Person receivedUser = ctx.bodyAsClass(Person.class);
-			Person pullUser = PersonRepository.pullUser(receivedUser);
 			String name = receivedUser.getPerson_username();
-			String rPass = receivedUser.getPerson_password();
-			String pPass = pullUser.getPerson_password();
 			
 			if (users.contains(name)) {
-				if (rPass == pPass) {
-					ctx.json("Welcome User");
-				}
+				Person pullUser = PersonRepository.pullUser(receivedUser);
+				String pPass = pullUser.getPerson_password();
+				String rPass = receivedUser.getPerson_password();
 				
-			} else {
-			ctx.json("User does not Exist.");
-			}
+				if (rPass.equals(pPass)) {
+					ctx.json("Welcome User");
+					ctx.res().addCookie(aCookie);
+					
+					if(pullUser.isPerson_boss()) {
+						ctx.res().addCookie(mCookie);
+					} else {
+						ctx.res().addCookie(eCookie);
+					}
+					
+				} else {
+					ctx.json("Password is Incorrect.");
+				}
 			
+			} else {
+				ctx.json("Username does not Exist.");
+			}
 			
 		});
 		
