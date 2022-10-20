@@ -5,25 +5,38 @@ import jakarta.servlet.http.Cookie;
 public class CookieRepository {
 
 	public static Cookie aCookie() {
-		//create cookies for session handling
-		Cookie aCookie = new Cookie("authenticated","true");
+		Cookie aCookie = new Cookie("auth","true");
 		aCookie.setHttpOnly(true);
-	
-	return aCookie;
+		return aCookie;
 	}
 	
 	public static Cookie eCookie() {
-		Cookie eCookie = new Cookie("boss","false");
+		Cookie eCookie = new Cookie("role","employee");
 		eCookie.setHttpOnly(true);
-		
 		return eCookie;
 	}
 	
 	public static Cookie mCookie() {
-		Cookie mCookie = new Cookie("boss", "true");
+		Cookie mCookie = new Cookie ("role", "manager");
 		mCookie.setHttpOnly(true);
-	
 		return mCookie;
 	}
 	
+	public static Cookie laCookie() {
+		Cookie laCookie = new Cookie("auth", "false");
+		laCookie.setHttpOnly(true);
+		return laCookie;
+	}
+	
+	public static Cookie lrCookie() {
+		Cookie lrCookie = new Cookie ("role","none");
+		lrCookie.setHttpOnly(true);
+		return lrCookie;
+	}
+	
+	
+	//public static boolean checkAuth() {
+		
+		//return boolean;
+	//}
 }

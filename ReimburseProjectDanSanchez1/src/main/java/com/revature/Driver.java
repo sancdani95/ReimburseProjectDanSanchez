@@ -39,9 +39,6 @@ public class Driver {
 			//creates variables for login procedure
 			List<String> users = new ArrayList<>();
 			users = PersonRepository.checkUser();
-			Cookie aCookie = CookieRepository.aCookie();
-			Cookie eCookie = CookieRepository.eCookie();
-			Cookie mCookie = CookieRepository.mCookie();
 			
 			
 			Person receivedUser = ctx.bodyAsClass(Person.class);
@@ -54,14 +51,15 @@ public class Driver {
 				
 				
 				if (rPass.equals(pPass)) {
-					ctx.res().addCookie(aCookie);
-					ctx.json("Welcome User");
+					ctx.res().addCookie(CookieRepository.aCookie());
 					
 					if(pullUser.isPerson_boss()) {
-						ctx.res().addCookie(mCookie);
+						ctx.res().addCookie(CookieRepository.mCookie());
+						ctx.json("Welcome manager.");
 						
 					} else {
-						ctx.res().addCookie(eCookie);
+						ctx.res().addCookie(CookieRepository.eCookie());
+						ctx.json("Welcome employee.");
 						
 					}
 					
@@ -150,7 +148,11 @@ public class Driver {
 			Cookie[] cookies = ctx.req().getCookies();
 			
 			for (Cookie cookie : cookies) {
-				if (cookie.getName().equals("authenticated")) cookie.setValue("false");
+			//	if (cookie.getName().equals("authenticated")) cookie.setMaxValue(0);
+				if (cookie.getName().equals("auth")) {
+					ctx.res().addCookie(CookieRepository.laCookie()); //had to force update cookies for postman
+					ctx.res().addCookie(CookieRepository.lrCookie());
+				}
 				
 			}
 			ctx.json("You have been Logged out.");
