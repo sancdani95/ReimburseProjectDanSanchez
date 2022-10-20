@@ -15,7 +15,7 @@ import com.revature.ultility.ConnectionFactory;
 public class TicketRepository {
 
 	//creates new ticket item
-	public static void submit(Ticket ticket) {
+	public static void submit(Ticket ticket, Person person) {
 		
 		//create SQL statement to submit new ticket
 		final String SQLsubmit = "INSERT INTO ticket VALUES (default, ?, ?, ?, default)";
@@ -25,7 +25,7 @@ public class TicketRepository {
 				PreparedStatement stmt = connect.prepareStatement(SQLsubmit);) {
 			
 			//insert variables into prepared statement
-			stmt.setString(1, ticket.getTicket_username());
+			stmt.setString(1, person.getPerson_username());
 			stmt.setInt(2, ticket.getTicket_amount());
 			stmt.setString(3, ticket.getTicket_description());
 			
@@ -41,10 +41,21 @@ public class TicketRepository {
 	
 	public static void respond(Ticket ticket) {
 		
+		ResultSet set = null;
+		
+		final String SQLticket = "SELECT ticket_status FROM ticket WHERE ticket_id = ?";
 		final String SQLrespond = "UPDATE ticket SET ticket_status = ? WHERE ticket_id = ?";
 		
 		try (Connection connect = ConnectionFactory.getConnection();
+				PreparedStatement sstmt = connect.prepareStatement(SQLticket);
 				PreparedStatement rstmt = connect.prepareStatement(SQLrespond);) {
+			
+			sstmt.setInt(1, ticket.getTicket_id());
+			
+			set = sstmt.executeQuery();
+			set.next();
+			String status = set.getString(1);
+			
 			
 			rstmt.setString(1, ticket.getTicket_status());
 			rstmt.setInt(2, ticket.getTicket_id());
@@ -56,38 +67,29 @@ public class TicketRepository {
 		}
 	}
 	
-	//pull employee submitted ticket(s)
+	//pull submitted ticket(s)
 		public static List<Ticket> findTicket(Person person) {
 			
 			//Creates objects that are needed
 			List<Ticket> ticketList = new ArrayList<>();
 			ResultSet set = null;
-			boolean boss = false;
-			ResultSet bossSet = null;
+			
 			
 			//SQL prepared statement for employee ticket
 			final String SQLEmployee = "SELECT * FROM ticket WHERE ticket_username = ?";
 			
 			//SQL statement if manager is asking
-			final String SQLManager = "SELECT * FROM ticket WHERE ticket_status = 'pending'";
-			
-			//SQL prepared statement to tell if it is a manager or employee
-			final String SQLPerson = "SELECT * FROM person WHERE person_username = ?";
-			
+			final String SQLManager = "SELECT * FROM ticket WHERE ticket_status = 'pending'";		
 			
 			
 			//Try method to manage the connection to the db and the prepared statement
 			try (Connection connect = ConnectionFactory.getConnection();
 					PreparedStatement pstmt = connect.prepareStatement(SQLEmployee);
-					PreparedStatement perstmt = connect.prepareStatement(SQLPerson);
 					Statement stmt = connect.createStatement();) {
 				
 				
-				perstmt.setString(1, person.getPerson_username());
-				bossSet = perstmt.executeQuery();
-				bossSet.next();
-				boss = bossSet.getBoolean(4);
-				//System.out.println(boss);
+				boolean boss = person.isPerson_boss();
+				
 				
 				//execute prepared statement
 				if (boss) {
