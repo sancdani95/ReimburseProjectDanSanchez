@@ -85,7 +85,8 @@ public class Driver {
 			receivedPerson = ctx.bodyAsClass(Person.class);
 			String rUser = receivedPerson.getPerson_username();
 			String rPass = receivedPerson.getPerson_password();
-			
+			List<String> pUsers = PersonRepository.checkUser();
+			boolean exsist = false;
 			
 			if (rUser.isBlank() || rPass.isBlank()) {
 				ctx.json("please provide a username and password");
@@ -93,7 +94,18 @@ public class Driver {
 				
 			}	else {
 				
-			
+				for (String user : pUsers) {
+					if (user.equals(rUser)) {
+						exsist = true;
+						break;
+					}
+				}
+			if (exsist) {
+				
+				ctx.json("Username already exsists");
+				ctx.status(HttpStatus.BAD_REQUEST_400);
+				
+			} else {
 			PersonRepository.save(receivedPerson);
 			
 			if (receivedPerson.isPerson_boss()) {
@@ -103,6 +115,7 @@ public class Driver {
 			}
 			ctx.status(HttpStatus.CREATED_201);
 			
+			}
 			}
 			
 		});
@@ -212,7 +225,7 @@ public class Driver {
 					ctx.json("you do not have access");
 					ctx.status(HttpStatus.BAD_REQUEST_400);
 				
-				}
+				}	
 			
 			} else {
 				ctx.json("please login");
