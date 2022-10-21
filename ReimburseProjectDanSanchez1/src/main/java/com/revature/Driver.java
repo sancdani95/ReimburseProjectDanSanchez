@@ -195,10 +195,18 @@ public class Driver {
 			
 			Ticket recievedTicket = ctx.bodyAsClass(Ticket.class);
 			
+			String status = TicketRepository.rStatus(recievedTicket);
+			
+			if (status.equals("pending")) {
+			
 			TicketRepository.respond(recievedTicket);
 			
 			ctx.result("Ticket Updated");
 			ctx.status(HttpStatus.ACCEPTED_202);
+			} else {
+				ctx.json("this ticket has all ready been " + status);
+				ctx.status(HttpStatus.BAD_REQUEST_400);
+			}
 			
 				} else {
 					ctx.json("you do not have access");

@@ -40,31 +40,48 @@ public class TicketRepository {
 	}
 	
 	public static void respond(Ticket ticket) {
+	
 		
-		ResultSet set = null;
-		
-		final String SQLticket = "SELECT ticket_status FROM ticket WHERE ticket_id = ?";
 		final String SQLrespond = "UPDATE ticket SET ticket_status = ? WHERE ticket_id = ?";
 		
 		try (Connection connect = ConnectionFactory.getConnection();
-				PreparedStatement sstmt = connect.prepareStatement(SQLticket);
 				PreparedStatement rstmt = connect.prepareStatement(SQLrespond);) {
 			
-			sstmt.setInt(1, ticket.getTicket_id());
 			
-			set = sstmt.executeQuery();
-			set.next();
-			String status = set.getString(1);
 			
+			//if (status.equals("pending")) {
 			
 			rstmt.setString(1, ticket.getTicket_status());
 			rstmt.setInt(2, ticket.getTicket_id());
 			
 			rstmt.execute();
 			
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public static String rStatus(Ticket ticket) {
+		ResultSet set = null;
+		String status = null;
+		
+		final String SQLticket = "SELECT ticket_status FROM ticket WHERE ticket_id = ?";
+		
+		try (Connection connect = ConnectionFactory.getConnection();
+				PreparedStatement sstmt = connect.prepareStatement(SQLticket);){
+			
+			sstmt.setInt(1, ticket.getTicket_id());
+			
+			set = sstmt.executeQuery();
+			set.next();
+			status = set.getString(1);
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return status;
+		
 	}
 	
 	//pull submitted ticket(s)
