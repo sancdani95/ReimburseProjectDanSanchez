@@ -11,7 +11,7 @@ SELECT * FROM person
 
 SELECT * FROM ticket
 
-INSERT INTO person VALUES (DEFAULT, 'bro', 'pass', DEFAULT)
+INSERT INTO person VALUES (DEFAULT, 'bro1', 'pass', DEFAULT)
 
 INSERT INTO person VALUES (DEFAULT, 'sis', 'word', DEFAULT),(DEFAULT, 'mom', '1111', TRUE), 
 (DEFAULT,'dad', '0000', TRUE)
